@@ -8,11 +8,11 @@ public class InstanceOfKeyword {
         int a = 0,b = 0,c = 0;
         for(int i = 0; i < mylist.size(); i++){
             Object element=mylist.get(i);
-            if(element.getClass().equals(Student.class))
+            if(element instanceof Student)
             a++;
-            if(element.getClass().equals(Rockstar.class))
+            if(element instanceof Rockstar)
             b++;
-            if(element.getClass().equals(Hacker.class))
+            if(element instanceof Hacker)
             c++;
         }
         String ret = Integer.toString(a)+" "+ Integer.toString(b)+" "+ Integer.toString(c);
