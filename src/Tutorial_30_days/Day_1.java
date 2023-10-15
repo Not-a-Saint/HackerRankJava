@@ -2,7 +2,7 @@ package Tutorial_30_days;
 
 import java.util.Scanner;
 
-public class Day1 {
+public class Day_1 {
     public static void main(String[] args) {
         int i = 4;
         double d = 4.0;
