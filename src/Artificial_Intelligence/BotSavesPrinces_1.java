@@ -78,40 +78,40 @@ class Game {
             }
         }
     }
-}
 
-abstract class Person {
-    private int row;
-    private int column;
+    abstract class Person {
+        private int row;
+        private int column;
 
 
-    public Person(int row, int column) {
-        this.row = row;
-        this.column = column;
+        public Person(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+
+        public void move(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+
+        public int getRow() {
+            return row;
+        }
+
+        public int getColumn() {
+            return column;
+        }
     }
 
-    public void move(int row, int column) {
-        this.row = row;
-        this.column = column;
+    class Princess extends Person {
+        public Princess(int row, int column) {
+            super(row, column);
+        }
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-}
-
-class Princess extends Person {
-    public Princess(int row, int column) {
-        super(row, column);
-    }
-}
-
-class Bot extends Person {
-    public Bot(int row, int column) {
-        super(row, column);
+    class Bot extends Person {
+        public Bot(int row, int column) {
+            super(row, column);
+        }
     }
 }
