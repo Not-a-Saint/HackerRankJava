@@ -3,64 +3,108 @@ package Artificial_Intelligence;
 import java.util.Scanner;
 
 public class BotSavesPrincess_2 {
+    public static void main(String[] args) {
+        Board board = new Board();
+        board.nextMove();
+    }
+}
+
+class Board {
     static final String UP = "UP";
     static final String DOWN = "DOWN";
     static final String LEFT = "LEFT";
     static final String RIGHT = "RIGHT";
-    static final String EMPTY_CELL = "-";
 
-    static final String PRINCESS = "p";
-    static final String BOT = "m";
+    static final char EMPTY_CELL = '-';
+    static final char PRINCESS = 'p';
+    static final char BOT = 'm';
 
+    private char[][] grid;
+    private Bot bot;
+    private Princess princess;
 
-    static void displayPathtoPrincess(String[][] grid) {
-        int[] princessCoordinates = findPerson(PRINCESS, grid);
-        int[] botCoordinates = findPerson(BOT, grid);
-        if (princessCoordinates[0] > botCoordinates[0]) {
-            grid[botCoordinates[0]][botCoordinates[1]] = EMPTY_CELL;
-            grid[botCoordinates[0] + 1][botCoordinates[1]] = BOT;
-            System.out.println(DOWN);
-        } else if (princessCoordinates[0] < botCoordinates[0]) {
-            grid[botCoordinates[0]][botCoordinates[1]] = EMPTY_CELL;
-            grid[botCoordinates[0] - 1][botCoordinates[1]] = BOT;
-            System.out.println(UP);
-        } else if (princessCoordinates[1] > botCoordinates[1]) {
-            grid[botCoordinates[0]][botCoordinates[1]] = EMPTY_CELL;
-            grid[botCoordinates[0]][botCoordinates[1] + 1] = BOT;
-            System.out.println(RIGHT);
-        } else {
-            grid[botCoordinates[0]][botCoordinates[1]] = EMPTY_CELL;
-            grid[botCoordinates[0]][botCoordinates[1] - 1] = BOT;
-            System.out.println(LEFT);
-        }
+    public Board() {
+        createBoard();
     }
 
+    private void createBoard() {
+        Scanner scanner = new Scanner(System.in);
+        //System.out.println("Enter grid size");  // better comment this line for site version
+        int size = scanner.nextInt();
+        //System.out.println("Enter bot position");   // better comment this line for site version
+        bot = new Bot(scanner.nextInt(), scanner.nextInt());
+        //System.out.println("Enter map");    // better comment this line for site version
+        scanner.nextLine();
+        grid = new char[size][];
+        for (int row = 0; row < size; row++) {
+            char[] inputLine = scanner.nextLine().trim().toCharArray();
+            for (int column = 0; column < size; column++) {
 
-    static int[] findPerson(String person, String[][] grid) {
-        int[] coordinates = new int[2];
-        for (int row = 0; row < grid.length; row++) {
-            for (int column = 0; column < grid.length; column++) {
-                if (grid[row][column].equals(person)) {
-                    coordinates[0] = row;
-                    coordinates[1] = column;
-                    break;
+                if (inputLine[column] == PRINCESS) {
+                    princess = new Princess(row, column);
                 }
             }
+            grid[row] = inputLine;
         }
-        return coordinates;
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int size;
-        size = scanner.nextInt();
-        scanner.nextLine();
-        String[][] grid = new String[size][];
-        for (int i = 0; i < size; i++) {
-            String[] row = scanner.nextLine().split("");
-            grid[i] = row;
+    public void nextMove() {
+        if (princess.getRow() > bot.getRow()) {
+            grid[bot.getRow()][bot.getColumn()] = EMPTY_CELL;
+            bot.move(bot.getRow() + 1, bot.getColumn());
+            grid[bot.getRow()][bot.getColumn()] = BOT;
+            System.out.println(DOWN);
+        } else if (princess.getRow() < bot.getRow()) {
+            grid[bot.getRow()][bot.getColumn()] = EMPTY_CELL;
+            bot.move(bot.getRow() - 1, bot.getColumn());
+            grid[bot.getRow()][bot.getColumn()] = BOT;
+            System.out.println(UP);
+        } else if (princess.getColumn() > bot.getColumn()) {
+            grid[bot.getRow()][bot.getColumn()] = EMPTY_CELL;
+            bot.move(bot.getRow(), bot.getColumn() + 1);
+            grid[bot.getRow()][bot.getColumn()] = BOT;
+            System.out.println(RIGHT);
+        } else {
+            grid[bot.getRow()][bot.getColumn()] = EMPTY_CELL;
+            bot.move(bot.getRow(), bot.getColumn() - 1);
+            grid[bot.getRow()][bot.getColumn()] = BOT;
+            System.out.println(LEFT);
         }
-        scanner.close();
-        displayPathtoPrincess(grid);
+
+    }
+
+    abstract class Person {
+        private int row;
+        private int column;
+
+        public Person(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+
+        public int getRow() {
+            return row;
+        }
+
+        public int getColumn() {
+            return column;
+        }
+    }
+
+    class Princess extends Person {
+        public Princess(int row, int column) {
+            super(row, column);
+        }
+    }
+
+    class Bot extends Person {
+        public Bot(int row, int column) {
+            super(row, column);
+        }
+
+        public void move(int row, int column) {
+            super.row = row;
+            super.column = column;
+        }
     }
 }
